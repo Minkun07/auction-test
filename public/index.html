@@ -1,49 +1,69 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>경매 시스템</title>
+  <meta charset="UTF-8" />
+  <title>마녀 공방 경매 로그인</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: "Pretendard", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #d3d3d3;
+    }
+    h1 {
+	  color: #000000;
+	  margin-top: -50px;
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      width: 250px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #6a4caf;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #563ca0;
+    }
+  </style>
 </head>
 <body>
-  <h1>🎮 경매 상품: 닌텐도 스위치</h1>
-  <p>💸 현재 최고 입찰가: <span id="price">10000</span>원</p>
-  <p>🙋 현재 입찰자: <span id="bidder">없음</span></p>
-  <p>⏳ 남은 시간: <span id="time">--:--</span></p>
+  <div class="login-box">
+    <h1>🔮 마녀 공방 경매 로그인</h1>
+    <input type="text" id="username" placeholder="아이디를 입력하세요" />
+  <button onclick="enter()">입장하기</button>
+  <p id="error" class="error-text"></p>
 
-  <input type="text" id="name" placeholder="당신의 이름 입력">
-  <input type="number" id="bidPrice" placeholder="입찰가 입력">
-  <button onclick="sendBid()">입찰하기</button>
-
-  <p id="result"></p>
-
-  <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io();
+    function enter() {
+      const id = document.getElementById("username").value.trim();
+	  const errorText = document.getElementById("error");
+      if (!id) {
+        alert("아이디를 입력하세요!");
+        return;
+      }
 
-    socket.on('update', (data) => {
-      document.getElementById('price').textContent = data.price;
-      document.getElementById('bidder').textContent = data.bidder;
-
-      let seconds = Math.floor(data.timeLeft / 1000);
-      let min = String(Math.floor(seconds / 60)).padStart(2, '0');
-      let sec = String(seconds % 60).padStart(2, '0');
-      document.getElementById('time').textContent = `${min}:${sec}`;
-    });
-
-    socket.on('ended', (data) => {
-      document.getElementById('result').textContent = `🎉 경매 종료! 낙찰자: ${data.winner} / 낙찰가: ${data.price}원`;
-    });
-
-    socket.on('error', (msg) => {
-      alert(msg);
-    });
-
-    function sendBid() {
-      const name = document.getElementById('name').value;
-      const price = parseInt(document.getElementById('bidPrice').value);
-
-      socket.emit('bid', { name, price });
+      if (id === "admin") {
+      window.location.href = "/admin.html";
+    } else if (id === "Minkun" || id === "Dayun") {
+      window.location.href = "/user.html?user=" + encodeURIComponent(id);
+    } else {
+      errorText.textContent = "❌ 아이디가 틀렸습니다.";
     }
+  }
   </script>
 </body>
 </html>

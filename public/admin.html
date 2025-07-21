@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관리자 화면</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- 상단 정보 박스 -->
+    <div class="auction-box">
+      <div class="auction-header-horizontal">
+        <div class="profile-placeholder"></div>
+        <div class="streamer-info">
+          <div class="product-name" id="product-name">플레이어</div>
+          <div class="badge-red">각오 한마디</div>
+          <div class="product-description product-quote" id="productDesc">여기에 각오가 표시됩니다.</div>
+        </div>
+      </div>
+      <div class="auction-info">
+        <span>남은 시간: <span id="countdown">0.0초</span></span>
+        <span>현재 입찰자: <span id="current-bidder">없음</span></span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- 경매 준비 UI -->
+	<div id="auction-ready" class="auction-box">
+		<h3>경매 준비</h3>
+		<p class="warning-text">
+			* 모두 준비 완료 시, 명령어 입력으로 경매를 시작할 수 있습니다.
+		</p>
+		<div class="ready-count">
+			<span id="ready-count-text">준비 인원: 0 / 16</span>
+		</div>
+	</div>
+
+    <!-- 입찰 UI -->
+    <div id="auction-bid" style="display: none;">
+      <div class="bid-box">
+        <div class="bid-title">입찰</div>
+        <div class="bid-input-area">
+          <input id="bid-input" type="number" placeholder="포인트 입력" />
+          <span class="point-label">P</span>
+        </div>
+        <div class="bid-buttons">
+          <button class="point-btn" onclick="addPoints(5)">+5</button>
+          <button class="point-btn" onclick="addPoints(10)">+10</button>
+          <button class="point-btn" onclick="addPoints(50)">+50</button>
+          <button class="point-btn" onclick="addPoints(100)">+100</button>
+          <button class="reset-btn" onclick="resetPoints()">초기화</button>
+          <button class="bid-btn" id="bid-button">입찰</button>
+        </div>
+        <div class="warning-text" id="warning"></div>
+      </div>
+
+      <div class="bidder-list">
+        <div class="bidder-title">입찰자 명단</div>
+        <ul id="bidder-list"></ul>
+      </div>
+    </div>
+
+    <!-- 명령어 입력창 -->
+    <div class="command-box">
+      <input id="command-input" type="text" placeholder="/명령어 입력" />
+      <button class="command-btn" id="command-button">실행</button>
+    </div>
+  </div>
+
+  <script src="common-script.js"></script>
+</body>
+</html>

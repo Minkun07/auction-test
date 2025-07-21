@@ -1,0 +1,365 @@
+/* ================================
+   공통 스타일
+================================= */
+body {  /** 전체 페이지 기본 배경 및 정렬 스타일 */
+  margin: 0;
+  padding: 40px 10px;
+  font-family: "Pretendard", sans-serif;
+  background-color: #121212;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.container {  /** 전체 레이아웃 컨테이너 */
+  width: 680px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ================================
+   로그인 화면 (index.html)
+================================= */
+.login-box {  /** 로그인 폼 전체 박스 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f5f5;
+  color: #000;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.login-box h1 { margin-top: 40px; margin-bottom: 10px; }  /** 로그인 제목 */
+.login-box input {  /** 로그인 입력창 */
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  width: 250px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-box button {  /** 로그인 버튼 */
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #6a4caf;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.login-box button:hover { background-color: #563ca0; }
+
+.error-text {  /** 아이디 오류 메시지 */
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* ================================
+   경매 화면 (user.html, admin.html)
+================================= */
+.auction-box, .bid-box, .bidder-list, .command-box {  /** 공통 박스 디자인 */
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.tier-badge {  /** 등급 뱃지 (예: 1티어) */
+  background-color: #ffd700;
+  color: black;
+  padding: 5px 15px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* 경매 상품 상단 */
+.auction-header {  /** 기존 가로 정렬 헤더 (사용 안할 경우 생략 가능) */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.auction-header-horizontal {  /** 이미지 + 스트리머 텍스트 가로 정렬 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.profile-placeholder {  /** 스트리머 프로필 자리 (검정 사각형) */
+  width: 130px;
+  height: 140px;
+  background-color: black;
+  border-radius: 10px;
+  margin: 0;
+}
+
+.streamer-info {  /** 스트리머 이름 + 각오 배지 세로 정렬 */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.tier {  /** 경매 상단 티어 배지 */
+  background-color: #FFD700;
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.product-name {  /** 스트리머 또는 상품 이름 */
+  font-weight: 1000;
+  font-size: 20px;
+  color: white;
+  margin-right: 10px;
+}
+
+.badge-red {  /** '각오 한마디' 빨간 뱃지 */
+  background-color: #ff3c3c;
+  color: white;
+  font-weight: 900;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  display: inline-block;
+  width: fit-content;
+  position: relative;
+  z-index: 2;
+}
+
+.product-description {  /** 각오 텍스트 박스 */
+  margin-top: -15px;
+  padding: 10px;
+  background-color: #333;
+  color: #ccc;
+  border-radius: 8px;
+  min-height: 60px;
+  max-width: 300px;
+  width: 300%;
+  box-sizing: border-box;
+}
+
+.product-quote {  /** 각오 한마디 문장 텍스트 */
+  display: inline-block;
+  white-space: normal;
+  word-break: break-word;
+  font-weight: bold;
+}
+
+.auction-info {  /** 입찰자, 남은 시간 등 정보 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  gap: 10px;
+}
+
+.auction-status {  /** 경매 시작 전 안내 문구 */
+  display: block;
+  margin-top: 20px;
+  color: #66aaff;
+  font-weight: bold;
+}
+
+.progress-bar {  /** 입찰 타이머 바 배경 */
+  width: 100%;
+  height: 8px;
+  background-color: #555;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress {  /** 진행 중인 입찰 타이머 채워지는 바 */
+  height: 100%;
+  width: 0%;
+  background-color: #ff4444;
+  transition: width 0.3s ease;
+}
+
+/* 입찰 박스 */
+.bid-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+.bid-input-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.bid-input-area input {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  background-color: #fff;
+  color: #000;
+}
+
+.point-label { font-size: 14px; }
+
+.bid-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.point-btn, .reset-btn, .bid-btn {  /** 입찰 버튼 기본 스타일 */
+  padding: 10px 14px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.point-btn { background-color: #333; color: #fff; }
+.reset-btn { background-color: #888; color: #fff; }
+.bid-btn {
+  background-color: #ff4444;
+  color: white;
+  flex-grow: 1;
+}
+
+.point-btn:hover, .reset-btn:hover, .bid-btn:hover { opacity: 0.8; }
+
+/* 입찰자 명단 */
+.bidder-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+#bidderList {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+#bidderList li {
+  padding: 6px 0;
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+}
+
+/* 관리자 명령어 */
+.command-box {
+  display: flex;
+  gap: 10px;
+}
+
+.command-box input {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  color: #000;
+}
+
+.command-btn {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.command-btn:hover {
+  background-color: #3a9e3d;
+}
+
+/* 준비 UI */
+.ready-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.ready-message {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.ready-btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.ready-btn.green {
+  background-color: #4caf50;
+  color: white;
+}
+
+.ready-btn.red {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-box {
+  background-color: #1e1e1e;
+  color: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px black;
+  max-width: 300px;
+}
+
+.confirm-btn {
+  margin-top: 20px;
+  padding: 8px 20px;
+  background-color: #ff4444;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+/* 상태별 버튼 색상 */
+.ready-green {
+  background-color: #4caf50; /* 초록색 */
+  color: white;
+}
+
+.ready-red {
+  background-color: #e74c3c; /* 빨간색 */
+  color: white;
+}

@@ -1,56 +1,57 @@
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const path = require('path');
+// server.js
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new Server(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
+// 준비 상태를 저장하는 Map (유저 이름 기준)
+const readyUsers = new Map();
+io.on("connection", (socket) => {
+  socket.on("readyStateChanged", ({ ready, name }) => {
+    readyUsers.set(name, ready);
+    const readyCount = [...readyUsers.values()].filter(Boolean).length;
+    io.emit("readyCountUpdate", readyCount);
+  });
+});
 
-let currentPrice = 10000; // 시작가
-let currentBidder = '없음';
-let endTime = Date.now() + 3 * 60 * 1000; // 3분 후 종료
+// public 폴더 내 정적 파일 제공
+app.use(express.static("public"));
 
-io.on('connection', (socket) => {
-  console.log('🔗 사용자 접속');
+io.on("connection", (socket) => {
+  console.log("클라이언트 접속:", socket.id);
 
-  // 접속하자마자 현재 상태 전송
-  socket.emit('update', { price: currentPrice, bidder: currentBidder, timeLeft: endTime - Date.now() });
+  // 유저 이름 정보
+  let username = null;
 
-  socket.on('bid', (data) => {
-    if (Date.now() > endTime) {
-      socket.emit('ended');
-      return;
-    }
+  // 클라이언트가 준비 상태를 보낼 때
+  socket.on("readyStateChanged", ({ ready, name }) => {
+	readyUsers.set(name, ready);
+	const readyCount = [...readyUsers.values()].filter(v => v).length;
+	io.emit("readyCountUpdate", readyCount);
+  });
 
-    if (data.price > currentPrice) {
-      currentPrice = data.price;
-      currentBidder = data.name;
+  // 클라이언트가 입찰 정보를 보낼 때 (선택)
+  socket.on("bid", (data) => {
+    console.log("입찰 수신:", data);
+    // 입찰 로직이 있으면 여기에 추가
+  });
 
-      io.emit('update', {
-        price: currentPrice,
-        bidder: currentBidder,
-        timeLeft: endTime - Date.now()
-      });
-    } else {
-      socket.emit('error', '입찰가는 현재가보다 높아야 합니다.');
+  // 클라이언트가 연결 종료할 때
+  socket.on("disconnect", () => {
+    console.log("클라이언트 연결 종료:", socket.id);
+
+    if (username) {
+      readyUsers.delete(username); // 나간 유저의 준비 상태 제거
+      const readyCount = [...readyUsers.values()].filter((v) => v).length;
+      io.emit("readyCountUpdate", readyCount); // 전체 갱신
     }
   });
 });
 
-setInterval(() => {
-  const now = Date.now();
-  if (now >= endTime) {
-    io.emit('ended', {
-      winner: currentBidder,
-      price: currentPrice
-    });
-  }
-}, 1000);
-
-server.listen(3000, () => {
-  console.log('✅ 서버 실행 중: http://localhost:3000');
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`✅ 서버 실행 중: http://localhost:${PORT}`);
 });
-
