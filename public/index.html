@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>경매 시스템</title>
+</head>
+<body>
+  <h1>🎮 경매 상품: 닌텐도 스위치</h1>
+  <p>💸 현재 최고 입찰가: <span id="price">10000</span>원</p>
+  <p>🙋 현재 입찰자: <span id="bidder">없음</span></p>
+  <p>⏳ 남은 시간: <span id="time">--:--</span></p>
+
+  <input type="text" id="name" placeholder="당신의 이름 입력">
+  <input type="number" id="bidPrice" placeholder="입찰가 입력">
+  <button onclick="sendBid()">입찰하기</button>
+
+  <p id="result"></p>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('update', (data) => {
+      document.getElementById('price').textContent = data.price;
+      document.getElementById('bidder').textContent = data.bidder;
+
+      let seconds = Math.floor(data.timeLeft / 1000);
+      let min = String(Math.floor(seconds / 60)).padStart(2, '0');
+      let sec = String(seconds % 60).padStart(2, '0');
+      document.getElementById('time').textContent = `${min}:${sec}`;
+    });
+
+    socket.on('ended', (data) => {
+      document.getElementById('result').textContent = `🎉 경매 종료! 낙찰자: ${data.winner} / 낙찰가: ${data.price}원`;
+    });
+
+    socket.on('error', (msg) => {
+      alert(msg);
+    });
+
+    function sendBid() {
+      const name = document.getElementById('name').value;
+      const price = parseInt(document.getElementById('bidPrice').value);
+
+      socket.emit('bid', { name, price });
+    }
+  </script>
+</body>
+</html>
